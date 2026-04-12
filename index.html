@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TeaCraft | Trà sữa cao cấp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="description" content="TeaCraft mang đến trải nghiệm trà sữa cao cấp với giao diện tối giản, hiện đại và tích hợp đầy đủ Firebase." />
+</head>
+<body>
+  <div class="preloader" id="preloader">
+    <div class="spinner"></div>
+  </div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container header-grid">
+      <a href="index.html" class="brand">TeaCraft</a>
+      <nav class="main-nav" aria-label="Chính">
+        <a href="#hero">Trang chủ</a>
+        <a href="#products">Thực đơn</a>
+        <a href="#how">Cách hoạt động</a>
+        <a href="#stories">Câu chuyện</a>
+      </nav>
+      <div class="actions">
+        <button id="cartToggleBtn" class="icon-btn" aria-label="Mở giỏ hàng">
+          <span class="icon">ðŸ›’</span><span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button id="authToggleBtn" class="btn btn-outline">Đăng nhập</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero" class="hero-section">
+      <div class="hero-grid container">
+        <div class="hero-text-block">
+          <h1 class="hero-title">Thưởng trà theo phong cách hiện đại, tinh tế.</h1>
+          <p class="hero-subtitle">Bộ sưu tập trà sữa cao cấp với thiết kế tối giản, dành cho những khoảnh khắc thật thư thái. Đặt trước, nhận món luôn tươi mới.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="shopNowBtn">Khám phá thực đơn</button>
+            <button class="btn btn-ghost" id="discoverBtn">Vì sao chọn TeaCraft</button>
+          </div>
+          <ul class="hero-highlights">
+            <li>Blend trà thủ công</li>
+            <li>Nguyên liệu tuyển chọn</li>
+            <li>Giao và nhận nhanh</li>
+          </ul>
+        </div>
+        <div class="hero-image-block">
+          <img src="assets/hero-tea.jpg" alt="Ly trà sữa cao cấp" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <section class="overview container" id="overview">
+      <div class="overview-card">
+        <h3>Dấu ấn pha chế riêng</h3>
+        <p>Mỗi ly nước được chuẩn bị tỉ mỉ, trình bày tinh gọn và thanh lịch, với mức ngọt cân bằng theo sở thích.</p>
+      </div>
+      <div class="overview-card">
+        <h3>Từ lá trà đến ly nước</h3>
+        <p>Hương vị được tạo nên từ lá trà chọn lọc, sữa thật hoặc kem yến mạch, cùng topping làm mới mỗi ngày.</p>
+      </div>
+      <div class="overview-card">
+        <h3>Đóng gói bền vững</h3>
+        <p>Bao bì thân thiện môi trường, tối giản nhựa nhưng vẫn giữ trọn cảm giác cao cấp khi nhận món.</p>
+      </div>
+    </section>
+
+    <section id="products" class="products-section">
+      <div class="container section-heading">
+        <h2>Bộ sưu tập nổi bật</h2>
+        <p>Khám phá thực đơn trà sữa, trà trái cây, latte kinh điển và những vị theo mùa phiên bản giới hạn.</p>
+      </div>
+
+      <div class="filters">
+        <button class="filter-btn active" data-filter="all">Tất cả</button>
+        <button class="filter-btn" data-filter="classic">Cổ điển</button>
+        <button class="filter-btn" data-filter="signature">Đặc trưng</button>
+        <button class="filter-btn" data-filter="fruit">Trái cây</button>
+        <button class="filter-btn" data-filter="seasonal">Theo mùa</button>
+        <button class="filter-btn" data-filter="plantbased">Nguồn gốc thực vật</button>
+      </div>
+
+      <div id="productGrid" class="product-grid" aria-live="polite"></div>
+      <button id="loadMoreBtn" class="btn btn-outline load-more" hidden>Xem thêm</button>
+    </section>
+
+    <section id="how" class="how-section container">
+      <div class="section-heading">
+        <h2>Cách TeaCraft hoạt động</h2>
+        <p>Đặt món nhanh chóng, nhận hàng thuận tiện, chất lượng cao cấp trong từng ly.</p>
+      </div>
+      <div class="steps-grid">
+        <article class="step-card">
+          <span class="step-number">1</span>
+          <h3>Chọn món yêu thích</h3>
+          <p>Duyệt danh mục được tuyển chọn với ghi chú hương vị và thông tin dinh dưỡng. Tạo ly nước của bạn chỉ trong vài giây.</p>
+        </article>
+        <article class="step-card">
+          <span class="step-number">2</span>
+          <h3>Tùy chỉnh</h3>
+          <p>Chọn độ ngọt, đá và topping. Lưu tùy chọn để đặt lại nhanh hơn ở lần sau.</p>
+        </article>
+        <article class="step-card">
+          <span class="step-number">3</span>
+          <h3>Thanh toán an toàn</h3>
+          <p>Thanh toán bằng thẻ hoặc Apple Pay, đồng thời chọn nhận tại quầy hoặc giao tận nơi.</p>
+        </article>
+        <article class="step-card">
+          <span class="step-number">4</span>
+          <h3>Theo dõi và thưởng thức</h3>
+          <p>Theo dõi đơn hàng theo thời gian thực và nhận cập nhật qua email hoặc tin nhắn.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="stories" class="stories-section">
+      <div class="container section-heading">
+        <h2>Câu chuyện khách hàng</h2>
+        <p>Khám phá vì sao khách hàng yêu thích phong cách tinh tế, nguyên liệu chất lượng và thiết kế chỉn chu của TeaCraft.</p>
+      </div>
+      <div class="review-carousel" id="reviewCarousel"></div>
+    </section>
+
+    <section class="newsletter-section">
+      <div class="container newsletter-grid">
+        <h2>Tham gia cộng đồng TeaCraft</h2>
+        <p>Nhận quyền truy cập sớm vào món theo mùa và các ưu đãi thành viên hấp dẫn.</p>
+        <form id="newsletterForm" class="newsletter-form" novalidate>
+          <input type="email" id="newsletterEmail" placeholder="Địa chỉ email" required />
+          <button type="submit" class="btn btn-primary">Đăng ký</button>
+        </form>
+        <p class="newsletter-success" id="newsletterSuccess" hidden>Cảm ơn bạn đã đăng ký! Chúng tôi sẽ sớm gửi những cập nhật mới nhất.</p>
+      </div>
+    </section>
+  </main>
+
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Ngăn giỏ hàng" hidden>
+    <div class="cart-header">
+      <h3>Giỏ hàng của bạn</h3>
+      <button class="icon-btn" id="cartCloseBtn" aria-label="Đóng giỏ hàng">×</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-summary">
+      <div>
+        <span>Tạm tính</span>
+        <span id="cartSubtotal">$0.00</span>
+      </div>
+      <div>
+        <span>Phí giao hàng</span>
+        <span id="cartDelivery">$2.50</span>
+      </div>
+      <div class="total-row">
+        <strong>Tổng cộng</strong>
+        <strong id="cartTotal">$0.00</strong>
+      </div>
+      <button id="checkoutBtn" class="btn btn-primary">Tiến hành thanh toán</button>
+    </div>
+  </aside>
+
+  <div class="modal-container" id="modalContainer" hidden>
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+      <button class="modal-close" id="modalCloseBtn" aria-label="Đóng">×</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <h3>TeaCraft</h3>
+        <p>Trải nghiệm mua trà sữa cao cấp dành cho cộng đồng yêu phong cách hiện đại và tối giản.</p>
+      </div>
+      <div>
+        <h4>Liên kết</h4>
+        <a href="#hero">Trang chủ</a>
+        <a href="#products">Thực đơn</a>
+        <a href="#how">Cách hoạt động</a>
+        <a href="#stories">Câu chuyện</a>
+      </div>
+      <div>
+        <h4>Liên hệ</h4>
+        <p>hello@teacraft-demo.com</p>
+        <p>+1 555 123 4567</p>
+        <address>123 Tea Lane, Thành phố, Quốc gia</address>
+      </div>
+      <div>
+        <h4>Theo dõi</h4>
+        <div class="social-links">
+          <a href="#" aria-label="Instagram">IG</a>
+          <a href="#" aria-label="Facebook">FB</a>
+          <a href="#" aria-label="Twitter">TW</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 TeaCraft. Xây dựng với Firebase, JavaScript thuần và CSS3.</p>
+      <a href="admin.html">Cổng quản trị</a>
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script type="module" src="app.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

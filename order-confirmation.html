@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TeaCraft | Xác nhận đơn hàng</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="description" content="Đơn hàng TeaCraft của bạn đã được xác nhận." />
+</head>
+<body>
+  <div class="preloader" id="preloader">
+    <div class="spinner"></div>
+  </div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container header-grid">
+      <a href="index.html" class="brand">TeaCraft</a>
+      <nav class="main-nav" aria-label="Chính">
+        <a href="index.html">Trang chủ</a>
+        <a href="index.html#products">Thực đơn</a>
+        <a href="index.html#how">Cách hoạt động</a>
+        <a href="index.html#stories">Câu chuyện</a>
+      </nav>
+      <div class="actions">
+        <button id="authToggleBtn" class="btn btn-outline">Đăng xuất</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="confirmation-section container">
+      <div id="confirmationContent">
+        <!-- Thông tin xác nhận sẽ được tải tại đây -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <h3>TeaCraft</h3>
+        <p>Trải nghiệm mua trà sữa cao cấp dành cho cộng đồng yêu phong cách hiện đại và tối giản.</p>
+      </div>
+      <div>
+        <h4>Liên kết</h4>
+        <a href="index.html">Trang chủ</a>
+        <a href="index.html#products">Thực đơn</a>
+        <a href="index.html#how">Cách hoạt động</a>
+        <a href="index.html#stories">Câu chuyện</a>
+      </div>
+      <div>
+        <h4>Liên hệ</h4>
+        <p>hello@teacraft-demo.com</p>
+        <p>+1 555 123 4567</p>
+        <address>123 Tea Lane, Thành phố, Quốc gia</address>
+      </div>
+      <div>
+        <h4>Theo dõi</h4>
+        <div class="social-links">
+          <a href="#" aria-label="Instagram">IG</a>
+          <a href="#" aria-label="Facebook">FB</a>
+          <a href="#" aria-label="Twitter">TW</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 TeaCraft. Xây dựng với Firebase, JavaScript thuần và CSS3.</p>
+      <a href="admin.html">Cổng quản trị</a>
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script type="module" src="order-confirmation.js"></script>
+</body>
+</html>

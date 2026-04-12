@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TeaCraft | Bảng điều khiển quản trị</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header" style="position: sticky; top: 0; z-index: 50;">
+    <div class="container header-grid" style="display: flex; justify-content: space-between;">
+      <a href="index.html" class="brand">TeaCraft Quản trị</a>
+      <div style="display: flex; gap: 1rem; align-items: center;">
+        <span id="adminUserName">Chưa đăng nhập</span>
+        <button id="adminSignOut" class="btn btn-outline">Đăng xuất</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 2rem 0;">
+    <section id="adminIntro" class="section-heading">
+      <h2>Bảng điều khiển quản trị</h2>
+      <p>Khu vực này dùng để quản lý sản phẩm, đơn hàng và dữ liệu cửa hàng. Chỉ người dùng có quyền quản trị mới được truy cập.</p>
+    </section>
+
+    <section id="adminControls" style="margin-top: 1rem;">
+      <button class="btn btn-primary" id="showNewProductForm">Thêm sản phẩm mới</button>
+      <button class="btn btn-outline" id="refreshDataBtn">Làm mới dữ liệu</button>
+    </section>
+
+    <section id="adminStatus" style="margin-top: 1rem;">
+      <div id="adminMessage" style="padding: 0.7rem 1rem; background: #fdf6f1; border: 1px solid #e8ddd3; border-radius: 10px; color: #7b6c61;"></div>
+    </section>
+
+    <section id="productManagement" style="margin-top: 1.6rem;">
+      <h3>Sản phẩm</h3>
+      <div id="adminProductGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;"></div>
+    </section>
+
+    <section id="orderManagement" style="margin-top: 1.6rem;">
+      <h3>Đơn hàng</h3>
+      <div id="adminOrderList"></div>
+    </section>
+  </main>
+
+  <aside class="modal-container" id="adminModal" hidden>
+    <div class="modal-backdrop" id="modalBackdropAdmin"></div>
+    <div class="modal-dialog" style="max-width: 780px;">
+      <button class="modal-close" id="adminModalClose">×</button>
+      <div id="adminModalContent"></div>
+    </div>
+  </aside>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

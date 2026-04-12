@@ -1,0 +1,8 @@
+const adminFirebaseConfig = {
+  apiKey: "AIzaSyBIkP7oG_7AEAfEh_ji_wSlxyjK32dv2C8",
+  authDomain: "milkteashop-b3e4d.firebaseapp.com",
+  projectId: "milkteashop-b3e4d",
+  storageBucket: "milkteashop-b3e4d.firebasestorage.app",
+  messagingSenderId: "746332662678",
+  appId: "1:746332662678:web:735bcb693d3fb68a184bb7"
+};
