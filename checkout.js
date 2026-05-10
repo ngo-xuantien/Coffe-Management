@@ -46,6 +46,14 @@ function formatCurrency(value) {
   return `$${Number(value).toFixed(2)}`;
 }
 
+function getCartImageUrl(rawUrl) {
+  const defaultImage = "drink-menu/images/New folder/cacao choco kem tươi.jpg";
+  if (!rawUrl || !rawUrl.trim()) return defaultImage;
+  const trimmed = rawUrl.trim();
+  if (/^(https?:|data:|blob:)/i.test(trimmed)) return trimmed;
+  return encodeURI(trimmed).replace(/#/g, "%23");
+}
+
 function updateCartCountUI() {
   const count = Object.values(ui.state.cart).reduce((sum, item) => sum + item.quantity, 0);
   selectors.cartCount.textContent = count;
@@ -91,11 +99,12 @@ function renderCartDrawer() {
   selectors.checkoutBtn.disabled = false;
 
   Object.values(ui.state.cart).forEach((item) => {
+    const imageUrl = getCartImageUrl(item.imageUrl);
     const itemEl = document.createElement("div");
     itemEl.className = "cart-item";
 
     itemEl.innerHTML = `
-      <img src="${item.imageUrl}" alt="${item.name}" loading="lazy" />
+      <img src="${imageUrl}" alt="${item.name}" loading="lazy" />
       <div class="cart-item-info">
         <h4>${item.name}</h4>
         <span>${formatCurrency(item.price)} x ${item.quantity}</span>

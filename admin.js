@@ -66,6 +66,14 @@ function adminUpdateUI() {
   adminSelectors.adminUserName.textContent = `Signed in as ${userName}`;
 }
 
+function adminResolveProductImageUrl(product = {}) {
+  const rawUrl = typeof product.imageUrl === "string" ? product.imageUrl.trim() : "";
+  const defaultImage = "drink-menu/images/New folder/cacao choco kem tươi.jpg";
+  if (!rawUrl) return defaultImage;
+  if (/^(https?:|data:|blob:)/i.test(rawUrl)) return rawUrl;
+  return encodeURI(rawUrl).replace(/#/g, "%23");
+}
+
 async function adminLoadProducts() {
   try {
     const snapshot = await adminDb.collection("products").orderBy("createdAt", "desc").get();
@@ -78,14 +86,15 @@ async function adminLoadProducts() {
     }
 
     adminState.products.forEach((product) => {
+      const imageUrl = adminResolveProductImageUrl(product);
       const card = document.createElement("div");
       card.style = "border: 1px solid #e8ddd3; padding: 1rem; border-radius: 10px; background: #fff; box-shadow: 0 8px 18px rgba(4, 3, 2, 0.08);";
       card.innerHTML = `
-        <img src="${product.imageUrl}" style="width:100%; height:160px; object-fit:cover; border-radius: 10px;" alt="${product.name}" />
+        <img src="${imageUrl}" style="width:100%; height:160px; object-fit:cover; border-radius: 10px;" alt="${product.name}" />
         <h4>${product.name}</h4>
         <p>${product.category} • ${formatCurrency(product.price)}</p>
         <p>${product.description ? product.description.slice(0, 110) + "..." : "No description"}</p>
-        <div style="display:flex; gap:0.5rem;">
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
           <button class="btn btn-sm btn-primary" data-action="edit" data-id="${product.id}">Edit</button>
           <button class="btn btn-sm btn-outline" data-action="delete" data-id="${product.id}">Delete</button>
         </div>
@@ -246,15 +255,21 @@ async function adminLoadOrders() {
       const orderCard = document.createElement("div");
       orderCard.style = "border:1px solid #e8ddd3; border-radius:12px; padding:15px; margin-bottom:0.8rem; background:#fff;";
       const orderItems = order.items.map((item) => `${item.quantity}×${item.name}`).join(", ");
+      const deliveryPhone = order.delivery?.phone ? `Điện thoại: ${order.delivery.phone}` : "";
+      const deliveryNotes = order.delivery?.notes ? `Ghi chú: ${order.delivery.notes}` : "";
+      const createdAt = order.createdAt?.toDate ? order.createdAt.toDate() : new Date(order.createdAt || Date.now());
 
       orderCard.innerHTML = `
-        <h4>#${order.id} <small>${order.status}</small></h4>
-        <p><strong>${order.userName}</strong> — ${order.delivery.address}</p>
+        <h4>#${order.id} <small style="text-transform: uppercase;">${order.status || "pending"}</small></h4>
+        <p><strong>${order.userName || order.userEmail || "Khách"}</strong> — ${order.delivery?.address || "Không có địa chỉ"}</p>
+        <p>${deliveryPhone}</p>
+        <p>${deliveryNotes}</p>
         <p>${orderItems}</p>
-        <p><span>${formatCurrency(order.totals?.total || 0)}</span> • <span>${new Date(order.createdAt?.toDate ? order.createdAt.toDate() : order.createdAt).toLocaleString()}</span></p>
-        <div style="display:flex; gap:0.6rem; margin-top:0.5rem;">
+        <p><span>${formatCurrency(order.totals?.total || 0)}</span> • <span>${createdAt.toLocaleString()}</span></p>
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-top:0.5rem;">
           <button class="btn btn-sm btn-outline" data-order-id="${order.id}" data-action="status">Update Status</button>
           <button class="btn btn-sm btn-ghost" data-order-id="${order.id}" data-action="pickup">Mark Ready</button>
+          <button class="btn btn-sm btn-danger" data-order-id="${order.id}" data-action="cancel">Cancel</button>
         </div>
       `;
 
@@ -267,7 +282,7 @@ async function adminLoadOrders() {
         const currentOrder = adminState.orders.find((o) => o.id === orderId);
         if (!currentOrder) return;
         const nextStatus = currentOrder.status === "pending" ? "in-progress" : currentOrder.status === "in-progress" ? "completed" : "completed";
-        await adminDb.collection("orders").doc(orderId).update({ status: nextStatus });
+        await adminDb.collection("orders").doc(orderId).update({ status: nextStatus, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
         adminToast(`Order ${orderId} status set to ${nextStatus}`);
         adminLoadOrders();
       });
@@ -276,8 +291,18 @@ async function adminLoadOrders() {
     adminSelectors.adminOrderList.querySelectorAll("button[data-action='pickup']").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const orderId = btn.dataset.orderId;
-        await adminDb.collection("orders").doc(orderId).update({ "fulfillment.pickedUp": true });
-        adminToast(`Order ${orderId} marked as picked up`);
+        await adminDb.collection("orders").doc(orderId).update({ "fulfillment.pickedUp": true, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+        adminToast(`Order ${orderId} marked as ready`);
+        adminLoadOrders();
+      });
+    });
+
+    adminSelectors.adminOrderList.querySelectorAll("button[data-action='cancel']").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const orderId = btn.dataset.orderId;
+        if (!confirm(`Cancel order ${orderId}?`)) return;
+        await adminDb.collection("orders").doc(orderId).update({ status: "cancelled", updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+        adminToast(`Order ${orderId} cancelled`);
         adminLoadOrders();
       });
     });

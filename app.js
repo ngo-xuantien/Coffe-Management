@@ -48,8 +48,8 @@ const ui = {
     products: [],
     cart: JSON.parse(localStorage.getItem("teacraft-cart")) || {},
     filter: "all",
-    visible: 9,
-    deliveryFee: 2.5,
+    visible: 999,
+    deliveryFee: 15000,
     orderFee: 0,
     isCartOpen: false,
     admin: false,
@@ -58,219 +58,303 @@ const ui = {
   activeElement: null,
 };
 
-const ProductSeed = [
-  {
-    id: "milk-oolong-classic",
-    name: "Royal Milk Oolong",
-    category: "classic",
-    price: 5.5,
-    description: "Rich oolong tea with creamy milk and brown sugar pearls.",
-    imageUrl: "assets/products/milk-oolong.jpg",
-    notes: ["brown sugar", "cream", "soft smoke"],
-    calories: 180,
-    options: {
-      sweetness: ["0%", "30%", "50%", "70%", "100%"],
-      ice: ["No ice", "Less ice", "Regular"],
-      toppings: ["tapioca", "pudding", "grass jelly", "cheese foam"],
-    },
-    inventory: 420,
-    featured: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "milk-charcoal-classic",
-    name: "Karasumi Black Tea",
-    category: "classic",
-    price: 5.8,
-    description: "Awakening black tea balanced with silky milk and premium tapioca pearls.",
-    imageUrl: "assets/products/charcoal-black.jpg",
-    notes: ["bold", "dark cocoa", "smooth"],
-    calories: 195,
-    options: {
-      sweetness: ["0%", "30%", "50%", "70%", "100%"],
-      ice: ["No ice", "Less ice", "Regular"],
-      toppings: ["tapioca", "pudding", "grass jelly", "aloe"],
-    },
-    inventory: 235,
-    featured: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "jasmine-latte",
-    name: "Jasmine Milk Latte",
-    category: "signature",
-    price: 6.2,
-    description: "Ethereal jasmine, almond milk and low-sugar sweetness, topped with flower petals.",
-    imageUrl: "assets/products/jasmine-latte.jpg",
-    notes: ["floral", "light", "elegant"],
-    calories: 160,
-    options: {
-      sweetness: ["0%", "30%", "50%", "70%", "100%"],
-      ice: ["No ice", "Less ice", "Regular"],
-      toppings: ["lychee jelly", "basil seed", "mango bits"],
-    },
-    inventory: 180,
-    featured: false,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "matcha-latte",
-    name: "Matcha Mindful Latte",
-    category: "signature",
-    price: 6.9,
-    description: "Ceremonial grade matcha with a silky oat foam finish.",
-    imageUrl: "assets/products/matcha-latte.jpg",
-    notes: ["verdant", "earthy", "creamy"],
-    calories: 200,
-    options: {
-      sweetness: ["0%", "30%", "50%", "70%", "100%"],
-      ice: ["No ice", "Less ice", "Regular"],
-      toppings: ["red bean", "mochi", "vanilla cream"],
-    },
-    inventory: 150,
-    featured: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "peach-jade-fruit",
-    name: "Peach Jade Fruit Tea",
-    category: "fruit",
-    price: 5.2,
-    description: "Uplifting white tea with peach, mint and seasonal citrus fruits.",
-    imageUrl: "assets/products/peach-fruit-tea.jpg",
-    notes: ["fresh", "light", "refreshing"],
-    calories: 125,
-    options: {
-      sweetness: ["0%", "30%", "50%", "70%", "100%"],
-      ice: ["No ice", "Less ice", "Regular"],
-      toppings: ["aloe", "fruit jelly", "kiwi pearls"],
-    },
-    inventory: 260,
-    featured: false,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "soy-vanilla-milk",
-    name: "Soy Vanilla Milk Tea",
-    category: "plantbased",
-    price: 5.7,
-    description: "A plant-driven favorite with creamy soy and vanilla notes.",
-    imageUrl: "assets/products/soy-vanilla.jpg",
-    notes: ["sweet", "nutty", "crisp"],
-    calories: 170,
-    options: {
-      sweetness: ["0%", "30%", "50%", "70%", "100%"],
-      ice: ["No ice", "Less ice", "Regular"],
-      toppings: ["chia pudding", "tapioca", "plant pearls"],
-    },
-    inventory: 300,
-    featured: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "strawberry-mint-frost",
-    name: "Strawberry Mint Frost",
-    category: "seasonal",
-    price: 6.2,
-    description: "Crisp iced tea blended with strawberry infusion and cool mint.",
-    imageUrl: "assets/products/strawberry-mint.jpg",
-    notes: ["cool", "fruity", "zesty"],
-    calories: 145,
-    options: {
-      sweetness: ["0%", "30%", "50%", "70%", "100%"],
-      ice: ["No ice", "Less ice", "Regular"],
-      toppings: ["strawberry bits", "lime jelly"],
-    },
-    inventory: 220,
-    featured: false,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "hibiscus-pearl-punch",
-    name: "Hibiscus Pearl Punch",
-    category: "fruit",
-    price: 5.9,
-    description: "Tangy hibiscus with floral notes and popping fruit pearls.",
-    imageUrl: "assets/products/hibiscus.jpg",
-    notes: ["tart", "sweet", "bright"],
-    calories: 130,
-    options: {
-      sweetness: ["0%", "30%", "50%", "70%", "100%"],
-      ice: ["No ice", "Less ice", "Regular"],
-      toppings: ["popping pearls", "lychee jelly"],
-    },
-    inventory: 170,
-    featured: false,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "caramel-oolong-cream",
-    name: "Caramel Oolong Cream",
-    category: "signature",
-    price: 6.4,
-    description: "Buttery caramel blended with aged oolong, topped with salted cream.",
-    imageUrl: "assets/products/caramel-oolong.jpg",
-    notes: ["caramel", "smoky", "velvet"],
-    calories: 220,
-    options: {
-      sweetness: ["0%", "30%", "50%", "70%", "100%"],
-      ice: ["No ice", "Less ice", "Regular"],
-      toppings: ["caramel shards", "pudding"],
-    },
-    inventory: 190,
-    featured: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "lavender-black-latte",
-    name: "Lavender Black Latte",
-    category: "seasonal",
-    price: 6.7,
-    description: "A calm blend of floral lavender and deep black tea with latte texture.",
-    imageUrl: "assets/products/lavender-latte.jpg",
-    notes: ["floral", "deep", "soothing"],
-    calories: 190,
-    options: {
-      sweetness: ["0%", "30%", "50%", "70%", "100%"],
-      ice: ["No ice", "Less ice", "Regular"],
-      toppings: ["honey pearls", "lavender foam"],
-    },
-    inventory: 140,
-    featured: false,
-    createdAt: new Date().toISOString(),
-  },
+const LOCAL_IMAGE_BASE = "drink-menu/images/New folder/";
+const PRODUCT_IMAGE_FILES = [
+  "cacao choco kem tươi.jpg",
+  "cacao choco mint đá xay.jpg",
+  "cacao choco mint.jpg",
+  "cacao choco viên.jpg",
+  "cacao kem tươi.jpg",
+  "cacao sữa.jpg",
+  "cacao đường đen.jpg",
+  "chè nhãn nhục.jpg",
+  "cà phê kem cacao.png",
+  "hồng trà kem tươi.jpg",
+  "hồng trà sữa tươi.jpg",
+  "lục trà kem tươi.jpg",
+  "matcha kem dừa.jpg",
+  "matcha kem sữa.jpg",
+  "matcha latte (nhật).jpg",
+  "matcha latte (đài).jpg",
+  "soda chanh.jpg",
+  "soda dâu.jpg",
+  "soda dưa hấu.jpg",
+  "soda matcha.jpg",
+  "soda thanh long.jpg",
+  "soda táo xanh.jpg",
+  "soda việt quốc.jpg",
+  "soda vải.jpg",
+  "sâm bí đao hạt chia sương sáo.jpg",
+  "sâm bổ lượng.jpg",
+  "sữa bơ tươi.jpg",
+  "sữa chuối tươi.jpg",
+  "sữa dâu tươi.jpg",
+  "sữa tươi bạc hà.jpg",
+  "sữa tươi kem dừa.jpg",
+  "sữa tươi kiwi.jpg",
+  "trà chanh bạc hà.jpg",
+  "trà chanh dây mật ong.jpg",
+  "trà chanh việt quốc.jpg",
+  "trà lài cam mật ong.jpg",
+  "trà lài đác thơm.jpg",
+  "trà lá dứa nếp hạt é.jpg",
+  "trà sữa hoa hồng.jpg",
+  "trà sữa hoa lài.jpg",
+  "trà sữa nhiệt đới.jpg",
+  "trà sữa thái xanh.jpg",
+  "trà sữa thái đỏ.jpg",
+  "trà sữa truyền thống.jpg",
+  "trà sữa ô long.jpg",
+  "trà thanh long ruột đỏ.jpg",
+  "trà trái vải tươi.jpg",
+  "trà việt quốc milkfoam.jpg",
+  "trà xoài milk foam.jpg",
+  "trà đào sả tắc.jpg",
+  "trà ổi hồng nhiệt đới.jpg",
+  "đá chanh tươi mát.jpg",
 ];
+const DEFAULT_LOCAL_IMAGE = PRODUCT_IMAGE_FILES[0];
+
+function toEncodedAssetPath(path) {
+  return encodeURI(path).replace(/#/g, "%23");
+}
+
+function resolveProductImageUrl(product = {}) {
+  const rawUrl = typeof product.imageUrl === "string" ? product.imageUrl.trim() : "";
+  const localImage = typeof product.imageFile === "string" ? product.imageFile.trim() : "";
+
+  if (/^(https?:|data:|blob:)/i.test(rawUrl)) {
+    return rawUrl;
+  }
+
+  if (localImage) {
+    return toEncodedAssetPath(`${LOCAL_IMAGE_BASE}${localImage}`);
+  }
+
+  if (rawUrl) {
+    return toEncodedAssetPath(rawUrl);
+  }
+
+  return toEncodedAssetPath(`${LOCAL_IMAGE_BASE}${DEFAULT_LOCAL_IMAGE}`);
+}
+
+function normalizeProduct(product = {}) {
+  return {
+    ...product,
+    price: getLocalizedPrice(product),
+    notes: product.notes || [],
+    options: {
+      sweetness: translateOptions(product.options?.sweetness, OPTION_TRANSLATIONS.sweetness),
+      ice: translateOptions(product.options?.ice, OPTION_TRANSLATIONS.ice),
+      toppings: translateOptions(product.options?.toppings, OPTION_TRANSLATIONS.toppings),
+    },
+    imageUrl: resolveProductImageUrl(product),
+  };
+}
+
+const CATEGORY_LABELS = {
+  all: "Tất cả",
+  classic: "Cổ điển",
+  signature: "Đặc trưng",
+  fruit: "Trái cây",
+  seasonal: "Theo mùa",
+  nocaffeine: "No Cafein",
+};
+
+const OPTION_TRANSLATIONS = {
+  sweetness: {
+    "0%": "0%",
+    "30%": "30%",
+    "50%": "50%",
+    "70%": "70%",
+    "100%": "100%",
+  },
+  ice: {
+    "No ice": "Không đá",
+    "Less ice": "Ít đá",
+    "Regular": "Đá vừa",
+  },
+  toppings: {
+    tapioca: "Trân châu đen",
+    pudding: "Pudding",
+    "grass jelly": "Sương sáo",
+    "cheese foam": "Kem cheese",
+    aloe: "Nha đam",
+    "lychee jelly": "Thạch vải",
+    "basil seed": "Hạt é",
+    "mango bits": "Xoài tươi",
+    "red bean": "Đậu đỏ",
+    mochi: "Mochi",
+    "vanilla cream": "Kem vani",
+    "fruit jelly": "Thạch trái cây",
+    "kiwi pearls": "Trân châu kiwi",
+    "chia pudding": "Pudding chia",
+    "plant pearls": "Trân châu thực vật",
+    "strawberry bits": "Dâu tươi",
+    "lime jelly": "Thạch chanh",
+    "popping pearls": "Trân châu nổ",
+    "caramel shards": "Vụn caramel",
+    "honey pearls": "Trân châu mật ong",
+    "lavender foam": "Kem oải hương",
+  },
+};
+
+function translateOptions(options = [], dictionary = {}) {
+  return (options || []).map((option) => dictionary[option] || option);
+}
+
+function hashString(value = "") {
+  return Array.from(String(value)).reduce((hash, char) => {
+    return (hash * 31 + char.charCodeAt(0)) % 100000;
+  }, 7);
+}
+
+function getLocalizedPrice(product = {}) {
+  const base = 40000;
+  const step = 1000;
+  const range = 20;
+  const seed = hashString(product.id || product.name || "teacraft");
+  return base + (seed % range) * step;
+}
+
+function slugifyVietnamese(text = "") {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+}
+
+function toDisplayName(fileName = "") {
+  const baseName = fileName.replace(/\.[^.]+$/, "");
+  const overrideNames = {
+    "trà sữa thái xanh.jpg": "Trà Sữa Thái Đỏ",
+    "trà sữa thái đỏ.jpg": "Trà Sữa Thái Xanh",
+  };
+
+  if (overrideNames[fileName]) {
+    return overrideNames[fileName];
+  }
+
+  return baseName
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+function inferCategory(name = "") {
+  if (name.includes("trà sữa")) return "classic";
+  if (
+    name.includes("sữa dâu") ||
+    name.includes("sữa chuối") ||
+    name.includes("sữa bơ") ||
+    name.includes("sữa tươi bạc hà") ||
+    name.includes("sữa tươi kiwi") ||
+    name.includes("sữa tươi kem dừa") ||
+    name.includes("cacao") ||
+    name.includes("chè") ||
+    name.includes("sâm") ||
+    name.includes("đá chanh")
+  ) return "nocaffeine";
+  if (name.includes("matcha") || name.includes("kem") || name.includes("milk foam") || name.includes("latte")) return "signature";
+  if (name.includes("soda") || name.includes("trà chanh") || name.includes("trà đào") || name.includes("trà trái") || name.includes("trà ổi") || name.includes("trà thanh long") || name.includes("trà lài")) return "fruit";
+  if (name.includes("bí đao") || name.includes("bổ lượng")) return "seasonal";
+  return "signature";
+}
+
+function buildDescription(name, category) {
+  const descriptions = {
+    classic: `${name} với hương vị dễ uống, cân bằng độ ngọt và phù hợp để thưởng thức mỗi ngày.`,
+    signature: `${name} là lựa chọn nổi bật với tầng vị rõ ràng, hậu vị mượt và cảm giác hiện đại.`,
+    fruit: `${name} mang phong cách tươi mát, thơm trái cây và rất hợp cho những ngày cần sự sảng khoái.`,
+    seasonal: `${name} là món đặc biệt giàu hương vị, tạo cảm giác mới lạ và đáng thử trong thực đơn.`,
+    nocaffeine: `${name} là lựa chọn dịu nhẹ, không chứa cafein và phù hợp để thưởng thức bất cứ thời điểm nào trong ngày.`,
+  };
+  return descriptions[category] || descriptions.signature;
+}
+
+function buildNotes(name = "") {
+  if (name.includes("matcha")) return ["matcha", "thơm béo", "mượt"];
+  if (name.includes("soda")) return ["mát lạnh", "tươi", "sảng khoái"];
+  if (name.includes("trà sữa")) return ["béo nhẹ", "thơm trà", "dễ uống"];
+  if (name.includes("cacao")) return ["đậm vị", "ngọt dịu", "thơm cacao"];
+  return ["cân bằng", "thơm", "dễ uống"];
+}
+
+function buildOptions(category) {
+  const common = {
+    sweetness: ["0%", "30%", "50%", "70%", "100%"],
+    ice: ["Không đá", "Ít đá", "Đá vừa"],
+  };
+
+  if (category === "fruit" || category === "seasonal") {
+    return {
+      ...common,
+      toppings: ["Nha đam", "Thạch trái cây", "Trân châu nổ"],
+    };
+  }
+
+  return {
+    ...common,
+    toppings: ["Trân châu đen", "Pudding", "Sương sáo", "Kem cheese"],
+  };
+}
+
+function buildProductFromImage(fileName, index) {
+  const name = toDisplayName(fileName);
+  const category = inferCategory(name.toLowerCase());
+
+  return {
+    id: slugifyVietnamese(name),
+    name,
+    category,
+    imageFile: fileName,
+    description: buildDescription(name, category),
+    notes: buildNotes(name.toLowerCase()),
+    calories: 120 + (index % 7) * 20,
+    options: buildOptions(category),
+    inventory: 80 + (index % 9) * 25,
+    featured: index < 8,
+    createdAt: new Date(Date.now() - index * 60000).toISOString(),
+  };
+}
+
+const ProductSeed = PRODUCT_IMAGE_FILES.map((fileName, index) => buildProductFromImage(fileName, index));
 
 const Reviews = [
   {
     id: "r1",
     name: "Emma Chen",
     rating: 5,
-    text: "TeaCraft melted my typical milk tea expectations. The interface is clean and the ordering process is top tier. The matcha latte is now my daily ritual.",
+    text: "TeaCraft khiến mình thay đổi hoàn toàn kỳ vọng về trà sữa. Giao diện gọn đẹp, đặt món rất mượt và matcha latte đã thành món uống mỗi ngày.",
   },
   {
     id: "r2",
     name: "Daniel Wu",
     rating: 5,
-    text: "Best UI/UX in the niche. I love the filter system and the product details modal. Delivery was faster than promised.",
+    text: "UI/UX thuộc nhóm tốt nhất mình từng dùng. Bộ lọc rõ ràng, phần xem chi tiết tiện và giao hàng còn nhanh hơn dự kiến.",
   },
   {
     id: "r3",
     name: "Sophia Tran",
     rating: 5,
-    text: "The loyalty system and the cart auto-save make it feel like legit e-commerce. The site looks elegant and the tea is delicious.",
+    text: "Tính năng lưu giỏ hàng tự động làm website rất chuyên nghiệp. Giao diện thanh lịch và đồ uống thực sự ngon.",
   },
   {
     id: "r4",
     name: "Miguel Reyes",
     rating: 4,
-    text: "Great quality and the 'build your own' system is intuitive. Would love deeper options for allergens and nutrition labels in future.",
+    text: "Chất lượng rất ổn và phần tùy chỉnh món cực dễ dùng. Nếu có thêm thông tin dị ứng và dinh dưỡng chi tiết nữa thì sẽ càng tốt.",
   },
   {
     id: "r5",
     name: "Priya Sharma",
     rating: 5,
-    text: "Stunning product photography and the shop categories are straightforward. The subscription newsletter also brought me a first-order discount.",
+    text: "Hình ảnh sản phẩm đẹp mắt, danh mục dễ hiểu và bản tin email còn giúp mình nhận ưu đãi cho đơn đầu tiên.",
   },
 ];
 
@@ -304,7 +388,7 @@ const toast = (message, type = "success") => {
 };
 
 function formatCurrency(value) {
-  return `$${Number(value).toFixed(2)}`;
+  return `${Math.round(Number(value) || 0).toLocaleString("vi-VN")}đ`;
 }
 
 function updateCartCountUI() {
@@ -342,7 +426,7 @@ function renderCartDrawer() {
   selectors.cartItems.innerHTML = "";
 
   if (Object.keys(ui.state.cart).length === 0) {
-    selectors.cartItems.innerHTML = `<div class='empty-cart'><p>Gi? h?ng ?ang tr?ng. H?y th?m m?n ?? b?t ??u.</p></div>`;
+    selectors.cartItems.innerHTML = `<div class='empty-cart'><p>Giỏ hàng đang trống. Hãy thêm món để bắt đầu.</p></div>`;
     selectors.checkoutBtn.disabled = true;
     updateCartCountUI();
     updateCartSummaryUI();
@@ -352,21 +436,22 @@ function renderCartDrawer() {
   selectors.checkoutBtn.disabled = false;
 
   Object.values(ui.state.cart).forEach((item) => {
+    const imageUrl = resolveProductImageUrl(item);
     const itemEl = document.createElement("div");
     itemEl.className = "cart-item";
 
     itemEl.innerHTML = `
-      <img src="${item.imageUrl}" alt="${item.name}" loading="lazy" />
+      <img src="${imageUrl}" alt="${item.name}" loading="lazy" />
       <div class="cart-item-info">
         <h4>${item.name}</h4>
         <span>${formatCurrency(item.price)} x ${item.quantity}</span>
         <span class="muted">${item.customization || ""}</span>
       </div>
       <div class="cart-item-controls">
-        <button class="decrease" data-id="${item.id}" aria-label="Gi?m s? l??ng">âˆ’</button>
+        <button class="decrease" data-id="${item.id}" aria-label="Giảm số lượng">−</button>
         <span>${item.quantity}</span>
-        <button class="increase" data-id="${item.id}" aria-label="T?ng s? l??ng">+</button>
-        <button class="remove" data-id="${item.id}" aria-label="Remove">âœ•</button>
+        <button class="increase" data-id="${item.id}" aria-label="Tăng số lượng">+</button>
+        <button class="remove" data-id="${item.id}" aria-label="Xóa">✕</button>
       </div>
     `;
 
@@ -406,10 +491,11 @@ function removeFromCart(productId) {
   delete ui.state.cart[productId];
   saveCartToLocal();
   renderCartDrawer();
-  toast("?? x?a s?n ph?m kh?i gi? h?ng.");
+  toast("Đã xóa sản phẩm khỏi giỏ hàng.");
 }
 
 function addToCart(product, frontOptions = {}) {
+  const normalizedProduct = normalizeProduct(product);
   const specialId = `${product.id}-${Object.keys(frontOptions).map(k => frontOptions[k]).join("-")}`;
   const key = specialId;
 
@@ -417,11 +503,11 @@ function addToCart(product, frontOptions = {}) {
     ui.state.cart[key] = {
       id: key,
       productId: product.id,
-      name: product.name,
-      imageUrl: product.imageUrl,
+      name: normalizedProduct.name,
+      imageUrl: normalizedProduct.imageUrl,
       price: product.price,
       quantity: 0,
-      customization: Object.keys(frontOptions).length ? Object.values(frontOptions).join(" â€¢ ") : "",
+      customization: Object.keys(frontOptions).length ? Object.values(frontOptions).join(" • ") : "",
       options: frontOptions,
     };
   }
@@ -429,7 +515,7 @@ function addToCart(product, frontOptions = {}) {
   ui.state.cart[key].quantity += 1;
   saveCartToLocal();
   renderCartDrawer();
-  toast(`?? th?m ${product.name} v?o gi? h?ng`);
+  toast(`Đã thêm ${normalizedProduct.name} vào giỏ hàng`);
 }
 
 function setCartOpen(open, focusTarget = null) {
@@ -447,26 +533,40 @@ function setCartOpen(open, focusTarget = null) {
 }
 
 function openProductModal(product) {
+  const normalizedProduct = normalizeProduct(product);
+  const categoryLabel = CATEGORY_LABELS[product.category] || product.category;
   selectors.modalContent.innerHTML = `
     <div class="product-modal-view">
       <div class="product-modal-image">
-        <img src="${product.imageUrl}" alt="${product.name}" loading="lazy" />
+        <img src="${normalizedProduct.imageUrl}" alt="${normalizedProduct.name}" loading="lazy" />
       </div>
       <div class="product-modal-info">
-        <h2 id="modalTitle">${product.name}</h2>
-        <p>${product.description}</p>
-        <p class="price-detail">${formatCurrency(product.price)}</p>
+        <div class="product-modal-copy">
+          <span class="product-modal-category">${categoryLabel}</span>
+          <h2 id="modalTitle">${normalizedProduct.name}</h2>
+          <p class="product-modal-description">${normalizedProduct.description}</p>
+          <div class="product-modal-meta">
+            ${normalizedProduct.notes.slice(0, 3).map((note) => `<span>${note}</span>`).join("")}
+          </div>
+          <p class="price-detail">${formatCurrency(product.price)}</p>
+        </div>
         <div class="product-options">
-          <label>?? ng?t</label>
-          <select id="modalSugarSelect">${product.options.sweetness.map((option) => `<option value="${option}">${option}</option>`).join("")}</select>
-          <label>??</label>
-          <select id="modalIceSelect">${product.options.ice.map((option) => `<option value="${option}">${option}</option>`).join("")}</select>
-          <label>Topping</label>
-          <select id="modalToppingSelect">${product.options.toppings.map((option) => `<option value="${option}">${option}</option>`).join("")}</select>
+          <div class="product-option-group">
+            <label for="modalSugarSelect">Độ ngọt</label>
+            <select id="modalSugarSelect">${normalizedProduct.options.sweetness.map((option) => `<option value="${option}">${option}</option>`).join("")}</select>
+          </div>
+          <div class="product-option-group">
+            <label for="modalIceSelect">Đá</label>
+            <select id="modalIceSelect">${normalizedProduct.options.ice.map((option) => `<option value="${option}">${option}</option>`).join("")}</select>
+          </div>
+          <div class="product-option-group">
+            <label for="modalToppingSelect">Topping</label>
+            <select id="modalToppingSelect">${normalizedProduct.options.toppings.map((option) => `<option value="${option}">${option}</option>`).join("")}</select>
+          </div>
         </div>
         <div class="product-modal-actions">
-          <button class="btn btn-primary" id="modalAddBtn">Th?m v?o gi?</button>
-          <button class="btn btn-ghost" id="modalCloseAction">??ng</button>
+          <button class="btn btn-primary" id="modalAddBtn">Thêm vào giỏ</button>
+          <button class="btn btn-ghost" id="modalCloseAction">Đóng</button>
         </div>
       </div>
     </div>
@@ -499,23 +599,24 @@ function hideModal() {
 selectors.modalCloseBtn.addEventListener("click", hideModal);
 
 function createProductCard(product) {
+  const normalizedProduct = normalizeProduct(product);
   const card = document.createElement("div");
   card.className = "product-card";
 
-  const title = product.name.length > 38 ? `${product.name.slice(0, 36)}...` : product.name;
-  const description = product.description.length > 60 ? `${product.description.slice(0, 58)}...` : product.description;
+  const title = normalizedProduct.name.length > 38 ? `${normalizedProduct.name.slice(0, 36)}...` : normalizedProduct.name;
+  const description = normalizedProduct.description.length > 60 ? `${normalizedProduct.description.slice(0, 58)}...` : normalizedProduct.description;
 
   card.innerHTML = `
-    <img src="${product.imageUrl}" alt="${product.name}" />
+    <img src="${normalizedProduct.imageUrl}" alt="${normalizedProduct.name}" />
     <div class="product-info">
-      <span class="product-category">${product.category}</span>
+      <span class="product-category">${CATEGORY_LABELS[product.category] || product.category}</span>
       <h3 class="product-title">${title}</h3>
       <p class="product-description">${description}</p>
       <div class="price-row">
         <span class="price">${formatCurrency(product.price)}</span>
         <div class="product-actions">
-          <button class="btn btn-sm btn-outline" data-action="details" data-id="${product.id}">Chi ti?t</button>
-          <button class="btn btn-sm btn-primary" data-action="add" data-id="${product.id}">Th?m</button>
+          <button class="btn btn-sm btn-outline" data-action="details" data-id="${product.id}">Chi tiết</button>
+          <button class="btn btn-sm btn-primary" data-action="add" data-id="${product.id}">Thêm</button>
         </div>
       </div>
     </div>
@@ -541,7 +642,7 @@ function renderProductGrid() {
 
   selectors.productGrid.innerHTML = "";
   if (slice.length === 0) {
-    selectors.productGrid.innerHTML = `<div class="empty-grid">Ch?a c? s?n ph?m ph? h?p v?i danh m?c n?y.</div>`;
+    selectors.productGrid.innerHTML = `<div class="empty-grid">Chưa có sản phẩm phù hợp với danh mục này.</div>`;
     selectors.loadMoreBtn.hidden = true;
     return;
   }
@@ -559,7 +660,7 @@ selectors.filterButtons.forEach((button) => {
     document.querySelectorAll(".filter-btn").forEach((btn) => btn.classList.remove("active"));
     button.classList.add("active");
     ui.state.filter = button.dataset.filter;
-    ui.state.visible = 9;
+    ui.state.visible = Math.max(ui.state.products.length, ProductSeed.length);
     renderProductGrid();
   });
 });
@@ -597,13 +698,13 @@ function showAuthModal(purpose = "login") {
   selectors.modalContent.innerHTML = `
     <div class="auth-modal">
       <div class="auth-header">
-        <p class="auth-eyebrow">TeaCraft Account</p>
-        <h2 id="modalTitle">ÄÄƒng nháº­p</h2>
-        <p id="modalDescription" class="auth-description">Truy cáº­p tÃ i khoáº£n cá»§a báº¡n vá»›i tráº£i nghiá»‡m nhanh chÃ³ng, tinh gá»n vÃ  báº£o máº­t.</p>
+        <p class="auth-eyebrow">Tài khoản TeaCraft</p>
+        <h2 id="modalTitle">Đăng nhập</h2>
+        <p id="modalDescription" class="auth-description">Truy cập tài khoản của bạn với trải nghiệm nhanh chóng, tinh gọn và bảo mật.</p>
       </div>
       <div class="auth-tabs">
-        <button id="loginTab" class="tab active">ÄÄƒng nháº­p</button>
-        <button id="registerTab" class="tab">ÄÄƒng kÃ½</button>
+        <button id="loginTab" class="tab active">Đăng nhập</button>
+        <button id="registerTab" class="tab">Đăng ký</button>
       </div>
       <div class="auth-forms">
         <form id="loginForm" class="auth-form active" novalidate>
@@ -612,14 +713,14 @@ function showAuthModal(purpose = "login") {
             <input id="loginEmail" type="email" required />
           </div>
           <div class="form-group full-width">
-            <label for="loginPassword">Máº­t kháº©u</label>
+            <label for="loginPassword">Mật khẩu</label>
             <input id="loginPassword" type="password" required minlength="6" />
           </div>
-          <button class="btn btn-primary auth-submit full-width" type="submit">ÄÄƒng nháº­p</button>
+          <button class="btn btn-primary auth-submit full-width" type="submit">Đăng nhập</button>
         </form>
         <form id="registerForm" class="auth-form" novalidate>
           <div class="form-group full-width">
-            <label for="registerName">Há» vÃ  tÃªn</label>
+            <label for="registerName">Họ và tên</label>
             <input id="registerName" type="text" required minlength="2" />
           </div>
           <div class="form-group">
@@ -627,14 +728,14 @@ function showAuthModal(purpose = "login") {
             <input id="registerEmail" type="email" required />
           </div>
           <div class="form-group">
-            <label for="registerPassword">Máº­t kháº©u</label>
+            <label for="registerPassword">Mật khẩu</label>
             <input id="registerPassword" type="password" required minlength="6" />
           </div>
-          <button class="btn btn-primary auth-submit full-width" type="submit">ÄÄƒng kÃ½</button>
+          <button class="btn btn-primary auth-submit full-width" type="submit">Đăng ký</button>
         </form>
       </div>
       <div class="auth-actions">
-        <button class="btn btn-ghost" id="modalAuthClose">Há»§y</button>
+        <button class="btn btn-ghost" id="modalAuthClose">Hủy</button>
       </div>
     </div>
   `;
@@ -652,15 +753,15 @@ function showAuthModal(purpose = "login") {
 
   const toggleForms = (tab) => {
     if (tab === "login") {
-      document.getElementById("modalTitle").textContent = "ÄÄƒng nháº­p";
-      document.getElementById("modalDescription").textContent = "Truy cáº­p tÃ i khoáº£n cá»§a báº¡n vá»›i tráº£i nghiá»‡m nhanh chÃ³ng, tinh gá»n vÃ  báº£o máº­t.";
+      document.getElementById("modalTitle").textContent = "Đăng nhập";
+      document.getElementById("modalDescription").textContent = "Truy cập tài khoản của bạn với trải nghiệm nhanh chóng, tinh gọn và bảo mật.";
       loginTab.classList.add("active");
       registerTab.classList.remove("active");
       loginForm.classList.add("active");
       registerForm.classList.remove("active");
     } else {
-      document.getElementById("modalTitle").textContent = "ÄÄƒng kÃ½";
-      document.getElementById("modalDescription").textContent = "Táº¡o tÃ i khoáº£n má»›i Ä‘á»ƒ lÆ°u Ä‘Æ¡n hÃ ng, theo dÃµi lá»‹ch sá»­ vÃ  thanh toÃ¡n thuáº­n tiá»‡n hÆ¡n.";
+      document.getElementById("modalTitle").textContent = "Đăng ký";
+      document.getElementById("modalDescription").textContent = "Tạo tài khoản mới để lưu đơn hàng, theo dõi lịch sử và thanh toán thuận tiện hơn.";
       loginTab.classList.remove("active");
       registerTab.classList.add("active");
       loginForm.classList.remove("active");
@@ -679,7 +780,7 @@ function showAuthModal(purpose = "login") {
       await signIn(email, password);
       hideModal();
       if (purpose === "checkout") showCheckoutModal();
-      toast("??ng nh?p th?nh c?ng");
+      toast("Đăng nhập thành công");
     } catch (error) {
       toast(error.message, "error");
     }
@@ -694,7 +795,7 @@ function showAuthModal(purpose = "login") {
     try {
       await signUp(name, email, password);
       hideModal();
-      toast("T?o t?i kho?n th?nh c?ng.");
+      toast("Tạo tài khoản thành công.");
     } catch (error) {
       toast(error.message, "error");
     }
@@ -741,16 +842,16 @@ async function signOutUser() {
   ui.state.user = null;
   ui.state.admin = false;
   updateAuthUI();
-  toast("??ng xu?t th?nh c?ng.");
+  toast("Đăng xuất thành công.");
 }
 
 function updateAuthUI() {
   if (ui.state.user) {
-    selectors.authToggleBtn.textContent = "ÄÄƒng xuáº¥t";
+    selectors.authToggleBtn.textContent = "Đăng xuất";
     selectors.authToggleBtn.classList.remove("btn-outline");
     selectors.authToggleBtn.classList.add("btn-primary");
   } else {
-    selectors.authToggleBtn.textContent = "ÄÄƒng nháº­p";
+    selectors.authToggleBtn.textContent = "Đăng nhập";
     selectors.authToggleBtn.classList.remove("btn-primary");
     selectors.authToggleBtn.classList.add("btn-outline");
   }
@@ -795,7 +896,7 @@ selectors.newsletterForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const email = selectors.newsletterEmail.value.trim();
   if (!email) {
-    toast("Vui l?ng nh?p ??a ch? email", "error");
+    toast("Vui lòng nhập địa chỉ email", "error");
     return;
   }
 
@@ -804,47 +905,47 @@ selectors.newsletterForm.addEventListener("submit", async (e) => {
     selectors.newsletterSuccess.hidden = false;
     selectors.newsletterEmail.value = "";
     setTimeout(() => (selectors.newsletterSuccess.hidden = true), 4400);
-    toast("??ng k? nh?n tin th?nh c?ng");
+    toast("Đăng ký nhận tin thành công");
   } catch (error) {
     console.error(error);
-    toast("Hi?n ch?a th? ??ng k? nh?n tin", "error");
+    toast("Hiện chưa thể đăng ký nhận tin", "error");
   }
 });
 
 function showCheckoutModal() {
   const subtotal = Object.values(ui.state.cart).reduce((acc, item) => acc + item.price * item.quantity, 0);
   if (subtotal <= 0) {
-    toast("H?y th?m s?n ph?m v?o gi? tr??c khi thanh to?n.");
+    toast("Hãy thêm sản phẩm vào giỏ trước khi thanh toán.");
     return;
   }
 
   selectors.modalContent.innerHTML = `
     <div class="checkout-modal">
-      <h2 id="modalTitle">Thanh to?n</h2>
+      <h2 id="modalTitle">Thanh toán</h2>
       <div class="checkout-grid">
         <section class="checkout-summary">
-          <h3>T?m t?t ??n h?ng</h3>
+          <h3>Tóm tắt đơn hàng</h3>
           <div id="checkoutItems"></div>
           <div class="checkout-totals">
-            <div><span>T?m t?nh:</span><span>${formatCurrency(subtotal)}</span></div>
-            <div><span>Ph? giao h?ng:</span><span>${formatCurrency(ui.state.deliveryFee)}</span></div>
-            <div class="total"><strong>T?ng c?ng</strong><strong>${formatCurrency(subtotal + ui.state.deliveryFee)}</strong></div>
+            <div><span>Tạm tính:</span><span>${formatCurrency(subtotal)}</span></div>
+            <div><span>Phí giao hàng:</span><span>${formatCurrency(ui.state.deliveryFee)}</span></div>
+            <div class="total"><strong>Tổng cộng</strong><strong>${formatCurrency(subtotal + ui.state.deliveryFee)}</strong></div>
           </div>
         </section>
         <section class="checkout-info">
-          <h3>Th?ng tin giao h?ng</h3>
+          <h3>Thông tin giao hàng</h3>
           <form id="checkoutForm" novalidate>
-            <label>H? v? t?n<input type="text" id="checkoutName" required value="${ui.state.user?.displayName || ""}" /></label>
+            <label>Họ và tên<input type="text" id="checkoutName" required value="${ui.state.user?.displayName || ""}" /></label>
             <label>Số điện thoại<input type="tel" id="checkoutPhone" required pattern="[0-9]{10,}" /></label>
             <label>Địa chỉ<textarea id="checkoutAddress" rows="3" required></textarea></label>
             <label>Ghi chú<textarea id="checkoutNotes" rows="2" placeholder="Để lại ghi chú (không bắt buộc)"></textarea></label>
             <fieldset>
-              <legend>Ch?n ph??ng th?c thanh to?n</legend>
-              <label><input type="radio" name="payment" value="card" checked /> Th? t?n d?ng</label>
+              <legend>Chọn phương thức thanh toán</legend>
+              <label><input type="radio" name="payment" value="card" checked /> Thẻ tín dụng</label>
               <label><input type="radio" name="payment" value="apple-pay" /> Apple Pay</label>
-              <label><input type="radio" name="payment" value="cash" /> Thanh to?n khi nh?n h?ng</label>
+              <label><input type="radio" name="payment" value="cash" /> Thanh toán khi nhận hàng</label>
             </fieldset>
-            <button class="btn btn-primary" type="submit">??t h?ng</button>
+            <button class="btn btn-primary" type="submit">Đặt hàng</button>
           </form>
         </section>
       </div>
@@ -881,7 +982,7 @@ async function placeOrder() {
   const paymentType = document.querySelector("input[name='payment']:checked").value;
 
   if (!name || !phone || !address) {
-    toast("Vui l?ng ?i?n ??y ?? c?c tr??ng b?t bu?c.", "error");
+    toast("Vui lòng điền đầy đủ các trường bắt buộc.", "error");
     return;
   }
 
@@ -917,24 +1018,24 @@ async function placeOrder() {
     syncCartToFirestore();
     renderCartDrawer();
     hideModal();
-    toast("??t h?ng th?nh c?ng! X?c nh?n s? ???c g?i t?i b?n s?m.");
+    toast("Đặt hàng thành công! Xác nhận sẽ được gửi tới bạn sớm.");
   } catch (error) {
     console.error(error);
-    toast("Hi?n ch?a th? ??t h?ng. Vui l?ng th? l?i sau.", "error");
+    toast("Hiện chưa thể đặt hàng. Vui lòng thử lại sau.", "error");
   }
 }
 
 async function seedDataIfNeeded() {
-  const productsSnapshot = await db.collection("products").limit(1).get();
-  if (!productsSnapshot.empty) return;
-
-  const batch = db.batch();
-  ProductSeed.forEach((item) => {
-    const docRef = db.collection("products").doc(item.id);
-    batch.set(docRef, item);
-  });
-
   try {
+    const productsSnapshot = await db.collection("products").limit(1).get();
+    if (!productsSnapshot.empty) return;
+
+    const batch = db.batch();
+    ProductSeed.forEach((item) => {
+      const docRef = db.collection("products").doc(item.id);
+      batch.set(docRef, item);
+    });
+
     await batch.commit();
     console.log("Product seed inserted.");
   } catch (err) {
@@ -948,7 +1049,7 @@ async function loadProducts() {
     const snapshot = await query.get();
     const products = [];
     snapshot.forEach((doc) => {
-      products.push({ id: doc.id, ...doc.data() });
+      products.push(normalizeProduct({ id: doc.id, ...doc.data() }));
     });
 
     if (products.length === 0) {
@@ -956,15 +1057,13 @@ async function loadProducts() {
       return loadProducts();
     }
 
-    ui.state.products = products;
+    ui.state.products = products.length >= ProductSeed.length ? products : ProductSeed.map(normalizeProduct);
     renderProductGrid();
   } catch (error) {
     console.error("Load products error", error);
-    toast("Unable to load product list. Check network.", "error");
-    if (ProductSeed.length > 0) {
-      ui.state.products = ProductSeed;
-      renderProductGrid();
-    }
+    toast("Không thể tải danh sách sản phẩm. Vui lòng kiểm tra kết nối mạng.", "error");
+    ui.state.products = ProductSeed.map(normalizeProduct);
+    renderProductGrid();
   }
 }
 
@@ -974,15 +1073,26 @@ function renderReviews() {
   Reviews.forEach((review) => {
     const card = document.createElement("article");
     card.className = "review-card";
-    const starString = "â˜…".repeat(review.rating) + "â˜†".repeat(5 - review.rating);
+    const starString = "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
     card.innerHTML = `<h4>${review.name}</h4><p class="stars">${starString}</p><p>${review.text}</p>`;
     reviewCarousel.appendChild(card);
   });
 }
 
 async function initApp() {
-  await seedDataIfNeeded();
+  try {
+    await seedDataIfNeeded();
+  } catch (error) {
+    console.error("Initial product seed check failed", error);
+  }
+
   await loadProducts();
+
+  if (!ui.state.products.length && ProductSeed.length > 0) {
+    ui.state.products = ProductSeed.map(normalizeProduct);
+    renderProductGrid();
+  }
+
   renderCartDrawer();
   updateCartCountUI();
   updateCartSummaryUI();

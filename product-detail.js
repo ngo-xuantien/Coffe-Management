@@ -44,6 +44,47 @@ const ui = {
   },
 };
 
+const LOCAL_IMAGE_BASE = "drink-menu/images/New folder/";
+const LOCAL_IMAGE_MAP = {
+  "milk-oolong-classic": "trà sữa ô long.jpg",
+  "milk-charcoal-classic": "hồng trà sữa tươi.jpg",
+  "jasmine-latte": "trà sữa hoa lài.jpg",
+  "matcha-latte": "matcha latte (nhật).jpg",
+  "peach-jade-fruit": "trà đào sả tắc.jpg",
+  "soy-vanilla-milk": "sữa tươi kem dừa.jpg",
+  "strawberry-mint-frost": "soda dâu.jpg",
+  "hibiscus-pearl-punch": "soda việt quốc.jpg",
+  "caramel-oolong-cream": "trà sữa truyền thống.jpg",
+  "lavender-black-latte": "trà sữa hoa hồng.jpg",
+};
+const DEFAULT_LOCAL_IMAGE = "trà sữa truyền thống.jpg";
+
+function toEncodedAssetPath(path) {
+  return encodeURI(path).replace(/#/g, "%23");
+}
+
+function resolveProductImageUrl(product = {}) {
+  const rawUrl = typeof product.imageUrl === "string" ? product.imageUrl.trim() : "";
+
+  if (/^(https?:|data:|blob:)/i.test(rawUrl)) {
+    return rawUrl;
+  }
+
+  if (rawUrl && !rawUrl.startsWith("assets/")) {
+    return toEncodedAssetPath(rawUrl);
+  }
+
+  const mappedFile = LOCAL_IMAGE_MAP[product.id] || DEFAULT_LOCAL_IMAGE;
+  return toEncodedAssetPath(`${LOCAL_IMAGE_BASE}${mappedFile}`);
+}
+
+function normalizeProduct(product = {}) {
+  return {
+    ...product,
+    imageUrl: resolveProductImageUrl(product),
+  };
+}
+
 function formatCurrency(value) {
   return `$${Number(value).toFixed(2)}`;
 }
@@ -93,11 +134,12 @@ function renderCartDrawer() {
   selectors.checkoutBtn.disabled = false;
 
   Object.values(ui.state.cart).forEach((item) => {
+    const imageUrl = resolveProductImageUrl(item);
     const itemEl = document.createElement("div");
     itemEl.className = "cart-item";
 
     itemEl.innerHTML = `
-      <img src="${item.imageUrl}" alt="${item.name}" loading="lazy" />
+      <img src="${imageUrl}" alt="${item.name}" loading="lazy" />
       <div class="cart-item-info">
         <h4>${item.name}</h4>
         <span>${formatCurrency(item.price)} x ${item.quantity}</span>
@@ -151,6 +193,7 @@ function removeFromCart(productId) {
 }
 
 function addToCart(product, frontOptions = {}) {
+  const normalizedProduct = normalizeProduct(product);
   const specialId = `${product.id}-${Object.keys(frontOptions).map(k => frontOptions[k]).join("-")}`;
   const key = specialId;
 
@@ -159,7 +202,7 @@ function addToCart(product, frontOptions = {}) {
       id: key,
       productId: product.id,
       name: product.name,
-      imageUrl: product.imageUrl,
+      imageUrl: normalizedProduct.imageUrl,
       price: product.price,
       quantity: 0,
       customization: Object.keys(frontOptions).length ? Object.values(frontOptions).join(" • ") : "",
@@ -197,6 +240,7 @@ function hideModal() {
 selectors.modalCloseBtn.addEventListener("click", hideModal);
 
 function renderProductDetail(product) {
+  const normalizedProduct = normalizeProduct(product);
   if (!product) {
     selectors.productDetailGrid.innerHTML = `<p>Không tìm thấy sản phẩm.</p>`;
     return;
@@ -204,7 +248,7 @@ function renderProductDetail(product) {
 
   selectors.productDetailGrid.innerHTML = `
     <div class="product-detail-image">
-      <img src="${product.imageUrl}" alt="${product.name}" loading="lazy" />
+      <img src="${normalizedProduct.imageUrl}" alt="${product.name}" loading="lazy" />
     </div>
     <div class="product-detail-info">
       <span class="product-category">${product.category}</span>
@@ -269,6 +313,7 @@ function renderProductDetail(product) {
 function renderRelatedProducts(products) {
   selectors.relatedProductsGrid.innerHTML = "";
   products.forEach((product) => {
+    const normalizedProduct = normalizeProduct(product);
     const card = document.createElement("div");
     card.className = "product-card";
 
@@ -276,7 +321,7 @@ function renderRelatedProducts(products) {
     const description = product.description.length > 60 ? `${product.description.slice(0, 58)}...` : product.description;
 
     card.innerHTML = `
-      <img src="${product.imageUrl}" alt="${product.name}" />
+      <img src="${normalizedProduct.imageUrl}" alt="${product.name}" />
       <div class="product-info">
         <span class="product-category">${product.category}</span>
         <h3 class="product-title">${title}</h3>
@@ -317,13 +362,13 @@ async function loadProduct() {
       return;
     }
 
-    ui.state.product = { id: doc.id, ...doc.data() };
+    ui.state.product = normalizeProduct({ id: doc.id, ...doc.data() });
     renderProductDetail(ui.state.product);
 
     // Load related products
     const relatedQuery = db.collection("products").where("category", "==", ui.state.product.category).limit(4);
     const relatedSnapshot = await relatedQuery.get();
-    ui.state.relatedProducts = relatedSnapshot.docs.map(d => ({ id: d.id, ...d.data() })).filter(p => p.id !== productId);
+    ui.state.relatedProducts = relatedSnapshot.docs.map((d) => normalizeProduct({ id: d.id, ...d.data() })).filter((p) => p.id !== productId);
     renderRelatedProducts(ui.state.relatedProducts);
 
   } catch (error) {

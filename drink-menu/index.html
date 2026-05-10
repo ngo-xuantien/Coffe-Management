@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SunBasic Tea | Menu Trà Sữa cao cấp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero-panel">
+      <div class="hero-copy">
+        <p class="eyebrow">Sunday Basic Inspired</p>
+        <h1>Menu Đồ Uống Cao Cấp</h1>
+        <p class="hero-description">Bộ sưu tập trà sữa, matcha, cacao và trà trái cây với phong cách tối giản, tone be nhẹ nhàng & cảm giác sang trọng.</p>
+      </div>
+      <div class="hero-actions">
+        <div class="search-group">
+          <label for="searchInput" class="sr-only">Tìm món</label>
+          <input id="searchInput" type="search" placeholder="Tìm theo tên món..." autocomplete="off" />
+        </div>
+      </div>
+    </header>
+
+    <section class="panel filter-panel" aria-label="Bộ lọc thực đơn">
+      <div class="filter-title">Lọc theo loại</div>
+      <div class="filter-group" id="filterGroup"></div>
+    </section>
+
+    <section class="panel menu-panel">
+      <div class="section-header">
+        <h2>Thực đơn nổi bật</h2>
+        <p>Danh sách được tạo từ tên file hình ảnh trong thư mục <code>/images</code>, tự động phân loại theo keyword và hỗ trợ tìm kiếm realtime.</p>
+      </div>
+      <div class="menu-grid" id="menuGrid"></div>
+      <div class="empty-state hidden" id="emptyState">Không tìm thấy món phù hợp. Thử lại với từ khóa khác.</div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

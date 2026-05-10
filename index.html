@@ -27,7 +27,7 @@
       </nav>
       <div class="actions">
         <button id="cartToggleBtn" class="icon-btn" aria-label="Mở giỏ hàng">
-          <span class="icon">ðŸ›’</span><span class="cart-count" id="cartCount">0</span>
+          <span class="icon">🛒</span><span class="cart-count" id="cartCount">0</span>
         </button>
         <button id="authToggleBtn" class="btn btn-outline">Đăng nhập</button>
       </div>
@@ -36,7 +36,7 @@
 
   <main>
     <section id="hero" class="hero-section">
-      <div class="hero-grid container">
+      <div class="container hero-text-shell">
         <div class="hero-text-block">
           <h1 class="hero-title">Thưởng trà theo phong cách hiện đại, tinh tế.</h1>
           <p class="hero-subtitle">Bộ sưu tập trà sữa cao cấp với thiết kế tối giản, dành cho những khoảnh khắc thật thư thái. Đặt trước, nhận món luôn tươi mới.</p>
@@ -50,9 +50,9 @@
             <li>Giao và nhận nhanh</li>
           </ul>
         </div>
-        <div class="hero-image-block">
-          <img src="assets/hero-tea.jpg" alt="Ly trà sữa cao cấp" loading="lazy" />
-        </div>
+      </div>
+      <div class="hero-banner-block">
+        <img src="drink-menu/images/New folder/banner.jpg" alt="Banner TeaCraft" loading="lazy" />
       </div>
     </section>
 
@@ -83,7 +83,7 @@
         <button class="filter-btn" data-filter="signature">Đặc trưng</button>
         <button class="filter-btn" data-filter="fruit">Trái cây</button>
         <button class="filter-btn" data-filter="seasonal">Theo mùa</button>
-        <button class="filter-btn" data-filter="plantbased">Nguồn gốc thực vật</button>
+        <button class="filter-btn" data-filter="nocaffeine">No Cafein</button>
       </div>
 
       <div id="productGrid" class="product-grid" aria-live="polite"></div>
@@ -149,15 +149,15 @@
     <div class="cart-summary">
       <div>
         <span>Tạm tính</span>
-        <span id="cartSubtotal">$0.00</span>
+        <span id="cartSubtotal">0đ</span>
       </div>
       <div>
         <span>Phí giao hàng</span>
-        <span id="cartDelivery">$2.50</span>
+        <span id="cartDelivery">15.000đ</span>
       </div>
       <div class="total-row">
         <strong>Tổng cộng</strong>
-        <strong id="cartTotal">$0.00</strong>
+        <strong id="cartTotal">0đ</strong>
       </div>
       <button id="checkoutBtn" class="btn btn-primary">Tiến hành thanh toán</button>
     </div>
@@ -209,14 +209,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
-  <script type="module" src="app.js"></script>
-
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
-
   <script src="app.js"></script>
-  <script type="module" src="app.js"></script>
 </body>
 </html>
