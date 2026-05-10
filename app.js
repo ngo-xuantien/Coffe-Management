@@ -16,6 +16,10 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch((error) => {
+  console.warn("Auth persistence setup failed", error);
+});
+
 const selectors = {
   preloader: document.getElementById("preloader"),
   cartToggleBtn: document.getElementById("cartToggleBtn"),
@@ -716,6 +720,9 @@ function showAuthModal(purpose = "login") {
             <label for="loginPassword">Mật khẩu</label>
             <input id="loginPassword" type="password" required minlength="6" />
           </div>
+          <div class="form-group full-width" style="text-align: right;">
+            <button type="button" id="forgotPasswordBtn" class="btn-link">Quên mật khẩu?</button>
+          </div>
           <button class="btn btn-primary auth-submit full-width" type="submit">Đăng nhập</button>
         </form>
         <form id="registerForm" class="auth-form" novalidate>
@@ -750,6 +757,7 @@ function showAuthModal(purpose = "login") {
   const loginForm = document.getElementById("loginForm");
   const registerForm = document.getElementById("registerForm");
   const modalAuthClose = document.getElementById("modalAuthClose");
+  const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
 
   const toggleForms = (tab) => {
     if (tab === "login") {
@@ -776,13 +784,27 @@ function showAuthModal(purpose = "login") {
     e.preventDefault();
     const email = document.getElementById("loginEmail").value.trim();
     const password = document.getElementById("loginPassword").value;
+    if (!email || !password) {
+      toast("Vui lòng điền email và mật khẩu.", "error");
+      return;
+    }
     try {
       await signIn(email, password);
       hideModal();
       if (purpose === "checkout") showCheckoutModal();
       toast("Đăng nhập thành công");
     } catch (error) {
-      toast(error.message, "error");
+      console.error("Login error", error);
+      const message = error.code === "auth/invalid-credential"
+        ? "Đăng nhập thất bại. Vui lòng kiểm tra email và mật khẩu."
+        : error.code === "auth/wrong-password"
+          ? "Mật khẩu không đúng. Vui lòng thử lại."
+          : error.code === "auth/user-not-found"
+            ? "Email chưa được đăng ký. Vui lòng đăng ký trước."
+            : error.code === "auth/invalid-email"
+              ? "Email không hợp lệ. Vui lòng kiểm tra lại."
+              : error.message;
+      toast(message, "error");
     }
   });
 
@@ -792,16 +814,51 @@ function showAuthModal(purpose = "login") {
     const email = document.getElementById("registerEmail").value.trim();
     const password = document.getElementById("registerPassword").value;
 
+    if (!name || !email || !password) {
+      toast("Vui lòng điền đầy đủ thông tin đăng ký.", "error");
+      return;
+    }
+    if (password.length < 6) {
+      toast("Mật khẩu phải có ít nhất 6 ký tự.", "error");
+      return;
+    }
+
     try {
       await signUp(name, email, password);
       hideModal();
       toast("Tạo tài khoản thành công.");
     } catch (error) {
-      toast(error.message, "error");
+      console.error("Register error", error);
+      const message = error.code === "auth/email-already-in-use"
+        ? "Email này đã được sử dụng. Hãy đăng nhập hoặc dùng email khác."
+        : error.code === "auth/invalid-email"
+          ? "Email không hợp lệ. Vui lòng kiểm tra lại."
+          : error.message;
+      toast(message, "error");
     }
   });
 
   modalAuthClose.addEventListener("click", hideModal);
+
+  forgotPasswordBtn.addEventListener("click", async () => {
+    const email = document.getElementById("loginEmail").value.trim();
+    if (!email) {
+      toast("Vui lòng nhập email trước khi reset mật khẩu.", "error");
+      return;
+    }
+    try {
+      await auth.sendPasswordResetEmail(email);
+      toast("Email reset mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư.");
+    } catch (error) {
+      console.error("Reset password error", error);
+      const message = error.code === "auth/user-not-found"
+        ? "Email này chưa được đăng ký."
+        : error.code === "auth/invalid-email"
+          ? "Email không hợp lệ."
+          : error.message;
+      toast(message, "error");
+    }
+  });
 }
 
 async function signUp(name, email, password) {
@@ -846,14 +903,21 @@ async function signOutUser() {
 }
 
 function updateAuthUI() {
+  const authStatus = document.getElementById("authStatus");
   if (ui.state.user) {
     selectors.authToggleBtn.textContent = "Đăng xuất";
     selectors.authToggleBtn.classList.remove("btn-outline");
     selectors.authToggleBtn.classList.add("btn-primary");
+    if (authStatus) {
+      authStatus.textContent = `Xin chào, ${ui.state.user.displayName || ui.state.user.email}`;
+    }
   } else {
     selectors.authToggleBtn.textContent = "Đăng nhập";
     selectors.authToggleBtn.classList.remove("btn-primary");
     selectors.authToggleBtn.classList.add("btn-outline");
+    if (authStatus) {
+      authStatus.textContent = "Bạn chưa đăng nhập";
+    }
   }
 }
 

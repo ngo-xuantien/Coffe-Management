@@ -203,6 +203,20 @@ button, input, select, textarea {
   background: var(--color-soft);
 }
 
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  text-decoration: underline;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-link:hover {
+  color: var(--color-primary-dark);
+}
+
 .hero-section {
   padding: 4rem 0 1.8rem;
   background: linear-gradient(135deg, #fffbf7 0%, #fff8f2 100%);
